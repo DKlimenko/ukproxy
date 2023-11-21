@@ -1,0 +1,4 @@
+$(eval $(call addlib,epamproxy))
+
+EPAMPROXY_SRCS-y += $(EPAMPROXY_BASE)/ukproxy.cpp
+EPAMPROXY_SRCS-y += $(EPAMPROXY_BASE)/wsclient.cpp
