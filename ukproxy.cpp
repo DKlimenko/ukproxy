@@ -2,7 +2,6 @@
 #include <pthread.h>
 
 #include <App.h>
-#include "ClientApp.h"
 #include "wsclient.hpp"
 
 static void usage(const char* argv0)
@@ -25,36 +24,26 @@ static void* clientThread(void* vargp)
 	fprintf(stdout, "ClientThread end\n");
 	ws->close();
 	pthread_exit(NULL);
-} 
+}
 
 static void* serverThread(void* vargp)
 {
 	fprintf(stdout, "ServerThread start\n");
-		/* Overly simple hello world app */
-		/*
-	uWS::SSLApp({
-	  .key_file_name = "misc/key.pem",
-	  .cert_file_name = "misc/cert.pem",
-	  .passphrase = "1234"
-	}).get("/*", [](auto *res, auto *req) {
-	    res->end("Hello world!");
-	}).listen(3000, [](auto *listen_socket) {
-	    if (listen_socket) {
-			std::cout << "Listening on port " << 3000 << std::endl;
-	    }
-	}).run();
+	uWS::App app;
+   const int port = 9001;
 
-	std::cout << "Failed to listen on port 3000" << std::endl;
-*/
-	uWS::App* app = new uWS::App();
-   /*uWS::App().get("/*", [](auto* res, auto* req) {
+   app.any("/*", [](auto* res, auto* req) {
       res->end("Hello World!");
-   }).listen(9001, [](auto *listenSocket) {
+   });
+
+   app.listen(port, [&port](auto *listenSocket) {
       if (listenSocket) {
          fprintf(stdout,"Listening for connections..." );
       }
-   }).run();
-*/
+   });
+
+   app.run();
+
 	fprintf(stdout, "ServerThread end\n");
 	pthread_exit(NULL);
 }
